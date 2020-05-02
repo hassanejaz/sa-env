@@ -1,0 +1,41 @@
+# This code is licensed from CircleCI to the user under the MIT license. See
+# https://circleci.com/orbs/registry/licensing for details.
+version: 2.1
+
+description: Terraform orb.
+
+executors:
+  terraform-0_12:
+    description: "Terraform 0.12 executor"
+    docker:
+      - image: ovotech/terraform@sha256:c67fc3b8e1edc3e22ba9e0b9f119153d838522898c7b639da73984623075efe8
+
+jobs:
+  build:
+    executor: terraform-0_12
+    steps:
+         - checkout
+         - run:
+            name: CD to env
+            command: |
+              pwd
+              curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+              unzip awscliv2.zip
+              ./aws/install
+              ls -latrh
+              aws --version
+         - run:
+            name: terraform init
+            command: |
+              cd env
+              terraform init
+         - run:
+            name: terraform plan
+            command: |
+              cd env
+              terraform plan
+         - run:
+            name: terraform apply
+            command: |
+              cd env
+              terraform apply -auto-approve
