@@ -62,7 +62,7 @@ module "workernode" {
 module "alb" {
   source                     = "./modules/alb/"
   name                       = "alb"
-  security_groups            = flatten(["${module.securitygroup.eks-cluster-node}"])
+  security_groups            = flatten(["${module.securitygroup.alb-securitygroup}"])
   vpc_id                     = module.vpc.vpc_id
-  subnets                    = ["${module.subnet.subnet_id_public}"]
+  subnets                    = [module.subnet.subnet_id_public.0.id, module.subnet.subnet_id_public.1.id, module.subnet.subnet_id_public.2.id, ]
 }

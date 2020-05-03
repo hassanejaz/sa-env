@@ -62,3 +62,34 @@ resource "aws_security_group_rule" "eks-cluster-node-ingress-cluster" {
   to_port                  = 65535
   type                     = "ingress"
 }
+
+resource "aws_security_group" "alb-securitygroup" {
+  name = "terraform security group"
+  description = "Allow incoming HTTP connections "
+
+  ingress {
+    from_port = 8000
+    to_port = 8000
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 8080
+    to_port = 8080
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  vpc_id      = "${var.vpc_id}"
+
+  tags = {
+    Name = "alb-securitygroup"
+  }
+}
