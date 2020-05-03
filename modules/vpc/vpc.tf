@@ -4,11 +4,7 @@ resource "aws_vpc" "eks-cluster-vpc" {
   instance_tenancy     = "default"
   enable_dns_support   = true
   enable_dns_hostnames = true
-
-  tags = "${
-    map(
-      "Name", "eks-cluster-vpc",
-      "kubernetes.io/cluster/${var.cluster-name}", "shared",
-    )
-  }"
+  tags                 = {
+    Name               = var.vpc_name
+  }
 }

@@ -46,7 +46,7 @@ resource "aws_autoscaling_group" "eks-cluster-autoscalegroup" {
   }
 
   tag {
-    key                 = "kubernetes.io/cluster/${var.cluster-name
+    key                 = "kubernetes.io/cluster/${var.cluster-name}"
     value               = "owned"
     propagate_at_launch = true
   }

@@ -1,4 +1,6 @@
 variable "vpc_cidr" {
 }
 
-variable "cluster-name" {}
+variable "vpc_name" {
+  
+}

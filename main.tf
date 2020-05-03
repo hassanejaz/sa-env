@@ -1,14 +1,22 @@
-module "eks-vpc" {
+locals {
+  vpc_name = "eks-vpc"
+  vpc_cidr = "10.68.0.0/16"
+  public-cidr  = ["10.68.4.0/24", "10.68.5.0/24", "10.68.6.0/24"]
+  private-cidr = ["10.68.1.0/24", "10.68.2.0/24", "10.68.3.0/24"]
+}
+
+
+module "vpc" {
   source       = "./modules/vpc"
-  vpc_cidr     = "10.98.0.0/16"
-  cluster-name = var.cluster-name
+  vpc_cidr     = local.vpc_cidr
+  vpc_name     = local.vpc_name
 }
 
 module "subnet" {
   source       = "./modules/subnet"
   vpc_id       = module.vpc.vpc_id
-  public-cidr  = ["10.98.4.0/24", "10.98.5.0/24", "10.98.6.0/24"]
-  private-cidr = ["10.98.1.0/24", "10.98.2.0/24", "10.98.3.0/24"]
+  public-cidr  = local.public-cidr
+  private-cidr = local.private-cidr
   cluster-name = var.cluster-name
 }
 
