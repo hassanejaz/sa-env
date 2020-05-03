@@ -64,7 +64,7 @@ resource "aws_subnet" "eks-cluster-subnet-private" {
 resource "aws_eip" "nat" {
   vpc               = true
   count             = "${length(var.private-cidr)}"
-  depends_on        = [aws_internet_gateway.eks-cluster-igw]
+  depends_on        = [aws_internet_gateway.igw]
 }
 
 #Natgate way in Public Subnet for internet access to Private Subnet
