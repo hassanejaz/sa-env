@@ -7,8 +7,8 @@ module "vpc" {
 module "subnet" {
   source       = "./modules/subnet"
   vpc_id       = "${module.vpc.vpc_id}"
-  public-cidr  = ["10.98.3.0/24", "10.98.4.0/24", "10.98.6.0/24"]
-  private-cidr = ["10.98.1.0/24", "10.98.2.0/24", "10.98.5.0/24"]
+  public-cidr  = ["10.98.4.0/24", "10.98.5.0/24", "10.98.6.0/24"]
+  private-cidr = ["10.98.1.0/24", "10.98.2.0/24", "10.98.3.0/24"]
   cluster-name = "${var.cluster-name}"
 }
 
@@ -62,7 +62,7 @@ module "workernode" {
 module "alb" {
   source                     = "./modules/alb/"
   name                       = "alb"
-  security_groups            = flatten(["${module.securitygroup.alb-securitygroup}"])
+  security_groups            = flatten([module.securitygroup.alb-securitygroup])
   vpc_id                     = module.vpc.vpc_id
-  subnets                    = [module.subnet.subnet_id_public.0.id, module.subnet.subnet_id_public.1.id, module.subnet.subnet_id_public.2.id, ]
+  subnets                    = [module.subnet.subnet_id_public.0, module.subnet.subnet_id_public.1, module.subnet.subnet_id_public.2]
 }
