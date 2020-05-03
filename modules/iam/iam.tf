@@ -33,6 +33,7 @@ resource "aws_iam_role" "eks-cluster-node" {
     }
   ]
 }
+
 POLICY
 }
 

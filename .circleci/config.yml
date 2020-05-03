@@ -101,18 +101,6 @@ jobs:
   apply-with-approval:
     <<: *apply_job
 
-  deployment:
-    docker: [{ image: "circleci/python:latest" }]
-    working_directory: "~/project"
-
-    steps:
-      - run:
-          name: "Deploy App"
-          command: |
-            pip install --user awscli
-            export PATH="~/.local/bin:$PATH"
-            pwd
-            terraform output
   destroy:
     <<: *default_config
     steps:
@@ -136,13 +124,8 @@ workflows:
       - apply:
           requires:
             - plan
-      - deployment:
-          requires:
-            - apply
       - hold:
           type: approval
-          requires:
-            - deployment
       - destroy:
           requires:
             - hold
