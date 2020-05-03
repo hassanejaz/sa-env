@@ -110,7 +110,7 @@ jobs:
           name: "Deploy App"
           command: |          
             pwd
-
+            
   destroy:
     <<: *default_config
     steps:
@@ -131,8 +131,16 @@ workflows:
       - plan:
           requires:
             - build
+      - apply:
+          requires:
+            - plan
+      - deployment:
+          requires:
+            - apply
       - hold:
           type: approval
+          requires:
+            - deployment
       - destroy:
           requires:
             - hold
