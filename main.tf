@@ -58,3 +58,11 @@ module "workernode" {
   autoscale_max_count              = 1
   autoscale_min_count              = 1
 }
+
+module "alb" {
+  source                     = "./modules/alb/"
+  name                       = "alb"
+  security_groups            = flatten(["${module.securitygroup.eks-cluster-node}"])
+  vpc_id                     = module.vpc.vpc_id
+  subnets                    = ["${module.subnet.subnet_id_public}"]
+}
