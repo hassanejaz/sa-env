@@ -96,6 +96,20 @@ jobs:
             source $BASH_ENV
             cd ~/project/
             terraform plan
+  apply:
+    <<: *apply_job
+  apply-with-approval:
+    <<: *apply_job
+
+  deployment:
+    docker: [{ image: "circleci/python:latest" }]
+    working_directory: "~/project"
+
+    steps:
+      - run:
+          name: "Deploy App"
+          command: |          
+            pwd
 
   destroy:
     <<: *default_config
@@ -120,8 +134,13 @@ workflows:
       - apply:
           requires:
             - plan
+      - deployment:
+          requires:
+            - apply
       - hold:
           type: approval
+          requires:
+            - deployment
       - destroy:
           requires:
             - hold
