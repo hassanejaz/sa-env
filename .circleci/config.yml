@@ -60,6 +60,7 @@ apply_job: &apply_job
           cd ~/project/
           terraform init 
           terraform apply --auto-approve
+          terraform output
 jobs:
 
   build:
@@ -104,6 +105,7 @@ jobs:
             pip install --user awscli
             export PATH="~/.local/bin:$PATH"
             pwd
+            terraform output
   destroy:
     <<: *default_config
     steps:
