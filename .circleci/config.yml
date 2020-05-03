@@ -93,19 +93,6 @@ jobs:
   apply-with-approval:
     <<: *apply_job
 
-  deployment:
-    docker: [{ image: "circleci/python:latest" }]
-    working_directory: "~/project"
-
-    steps:
-      - run:
-          name: "Push to S3"
-          command: |
-            pip install --user awscli
-            export PATH="~/.local/bin:$PATH"
-            git clone https://github.com/hashicorp/learn-terraform-circleci/ .
-            pwd
-            aws s3 sync --acl public-read "/home/circleci/project/assets" s3://${APP_BUCKET}
   destroy:
     <<: *default_config
     steps:
@@ -129,13 +116,10 @@ workflows:
       - apply:
           requires:
             - plan
-      - deployment:
-          requires:
-            - apply
       - hold:
           type: approval
           requires:
-            - deployment
+            - apply
       - destroy:
           requires:
             - hold
