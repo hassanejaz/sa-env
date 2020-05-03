@@ -62,8 +62,9 @@ resource "aws_subnet" "eks-cluster-subnet-private" {
 
 # EIP To be associate with NATGateway
 resource "aws_eip" "nat" {
-  vpc   = true
-  count = "${length(var.private-cidr)}"
+  vpc               = true
+  count             = "${length(var.private-cidr)}"
+  depends_on        = [aws_internet_gateway.eks-cluster-igw]
 }
 
 #Natgate way in Public Subnet for internet access to Private Subnet
@@ -71,7 +72,7 @@ resource "aws_nat_gateway" "eks-cluster-natgw" {
   count         = "${length(var.private-cidr)}"
   allocation_id = "${aws_eip.nat.*.id[count.index]}"
   subnet_id     = "${aws_subnet.eks-cluster-subnet-public.*.id[count.index]}"
-  depends_on    = ["aws_internet_gateway.eks-cluster-igw"]
+  depends_on    = [aws_internet_gateway.eks-cluster-igw]
   tags = {
     Name = "eks-cluster-natgw"
   }
