@@ -30,6 +30,7 @@ The following [environment variables](https://circleci.com/docs/2.0/env-vars/#se
 | `AWS_ACCESS_KEY_ID`            | Used by the AWS CLI                                       |
 | `AWS_SECRET_ACCESS_KEY `       | Used by the AWS CLI                                       |
 | `AWS_REGION`                   | Used by the AWS CLI. Example value: "us-east-1"           |
+| `APP_BUCKET`                   | S3 bucket name to store the state of the terraform run    |
 
 
 ## Installation 
