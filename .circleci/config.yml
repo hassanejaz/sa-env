@@ -96,10 +96,6 @@ jobs:
             source $BASH_ENV
             cd ~/project/
             terraform plan
-  apply:
-    <<: *apply_job
-  apply-with-approval:
-    <<: *apply_job
 
   destroy:
     <<: *default_config
