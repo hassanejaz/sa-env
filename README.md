@@ -70,7 +70,6 @@ git clone https://github.com/hassanejaz/sa-env.git
  | | |-output.tf
  | | |-workernode.tf
  | | |-vars.tf
- | |-.DS_Store
  | |-ecr
  | | |-output.tf
  | | |-ecr.tf
