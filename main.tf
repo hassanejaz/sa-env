@@ -1,6 +1,6 @@
 locals {
   vpc_name = "eks-vpc"
-  vpc_cidr = "10.68.2.0/20"
+  vpc_cidr = "10.68.0.0/20"
 }
 
 
