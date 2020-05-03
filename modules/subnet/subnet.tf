@@ -72,7 +72,7 @@ resource "aws_nat_gateway" "eks-cluster-natgw" {
   count         = "${length(var.private-cidr)}"
   allocation_id = "${aws_eip.nat.*.id[count.index]}"
   subnet_id     = "${aws_subnet.eks-cluster-subnet-public.*.id[count.index]}"
-  depends_on    = [aws_internet_gateway.eks-cluster-igw]
+  depends_on    = ["aws_internet_gateway.eks-cluster-igw"]
   tags = {
     Name = "eks-cluster-natgw"
   }
