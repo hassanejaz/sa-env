@@ -60,7 +60,14 @@ apply_job: &apply_job
           cd ~/project/
           terraform init 
           terraform apply --auto-approve
-          terraform output
+    - run:
+        name: terraform output
+        command: |
+          mkdir /tmp/artifacts;
+          terraform output  > /tmp/artifacts/output.txt
+    - store_artifacts:
+          path: /tmp/artifacts
+
 jobs:
 
   build:
