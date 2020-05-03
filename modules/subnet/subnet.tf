@@ -13,6 +13,21 @@ resource "aws_subnet" "eks-cluster-subnet-public" {
   }"
 }
 
+## Private Subnet
+resource "aws_subnet" "eks-cluster-subnet-private" {
+  count             = "${length(var.private-cidr)}"
+  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
+  cidr_block        = "${var.private-cidr[count.index]}"
+  vpc_id            = "${var.vpc_id}"
+
+  tags = "${
+    map(
+      "Name", "private-eks",
+      "kubernetes.io/cluster/${var.cluster-name}", "shared",
+    )
+  }"
+}
+
 #IGW for internet
 resource "aws_internet_gateway" "eks-cluster-igw" {
   vpc_id = "${var.vpc_id}"
@@ -45,26 +60,13 @@ resource "aws_route_table_association" "routetable-association-public" {
 }
 
 
-## Private Subnet
-resource "aws_subnet" "eks-cluster-subnet-private" {
-  count             = "${length(var.private-cidr)}"
-  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
-  cidr_block        = "${var.private-cidr[count.index]}"
-  vpc_id            = "${var.vpc_id}"
 
-  tags = "${
-    map(
-      "Name", "private-eks",
-      "kubernetes.io/cluster/${var.cluster-name}", "shared",
-    )
-  }"
-}
 
 # EIP To be associate with NATGateway
 resource "aws_eip" "nat" {
-  vpc               = true
-  count             = "${length(var.private-cidr)}"
-  depends_on        = [aws_internet_gateway.eks-cluster-igw]
+  vpc        = true
+  count      = "${length(var.private-cidr)}"
+  depends_on = [aws_internet_gateway.eks-cluster-igw]
 }
 
 #Natgate way in Public Subnet for internet access to Private Subnet

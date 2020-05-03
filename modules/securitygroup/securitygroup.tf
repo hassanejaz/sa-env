@@ -55,7 +55,7 @@ resource "aws_security_group_rule" "eks-cluster-node-ingress-self" {
 
 resource "aws_security_group_rule" "eks-cluster-node-ingress-cluster" {
   description              = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
-  from_port                = 443 
+  from_port                = 443
   protocol                 = "tcp"
   security_group_id        = "${aws_security_group.eks-cluster-node.id}"
   source_security_group_id = "${aws_security_group.eks-cluster-securitygroup.id}"
@@ -64,30 +64,30 @@ resource "aws_security_group_rule" "eks-cluster-node-ingress-cluster" {
 }
 
 resource "aws_security_group" "alb-securitygroup" {
-  name = "terraform security group"
+  name        = "terraform security group"
   description = "Allow incoming HTTP connections "
 
   ingress {
-    from_port = 8000
-    to_port = 8000
-    protocol = "tcp"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    from_port = 8080
-    to_port = 8080
-    protocol = "tcp"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
-  vpc_id      = "${var.vpc_id}"
+  vpc_id = "${var.vpc_id}"
 
   tags = {
     Name = "alb-securitygroup"
